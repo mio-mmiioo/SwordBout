@@ -2,6 +2,7 @@
 #include <assert.h>
 #include "Camera.h"
 #include "Stage.h"
+#include "Bee.h"
 
 namespace
 {
@@ -98,6 +99,23 @@ bool Player::HitAttackKey()
 	return false;
 }
 
+void Player::AttackMain()
+{
+	int wp = MV1SearchFrame(hModel, "wp");
+	MATRIX mWp = MV1GetFrameLocalWorldMatrix(hModel, wp);
+	VECTOR3 nowSabelBottom = VECTOR3(0, 0, 0) * mWp;
+	VECTOR3 nowSabelTop = VECTOR3(0, -200, 0) * mWp;
+
+	//‚±‚±‚Å“–‚½‚è”»’è
+	std::list<Bee*> bees = FindGameObjects<Bee>();
+	for (Bee* b : bees)
+	{
+		b->Attack(prevSabelBottom, prevSabelTop, nowSabelBottom, nowSabelTop);
+	}
+	prevSabelTop = nowSabelTop;
+	prevSabelBottom = nowSabelBottom;
+}
+
 void Player::UpdateFree()
 {
 	VECTOR3 move;
@@ -168,6 +186,7 @@ void Player::UpdateAttack1()
 		animator->Play(A_NEUTRAL);
 		state = S_FREE;
 	}
+	AttackMain();
 	if (animator->GetCurrentFrame() >= 8.5f)
 	{
 		if (HitAttackKey())
@@ -222,8 +241,4 @@ void Player::Draw()
 	MV1DrawModel(hSabel);
 
 	DrawLine3D(VECTOR3(0, 0, 0) * mWp, VECTOR3(0, -100, 0) * mWp, GetColor(255, 0, 0));
-	DrawLine3D(prevSabelTop, prevSabelBottom, GetColor(0, 0, 255));
-
-	prevSabelTop = VECTOR3(0, 0, 0) * mWp;
-	prevSabelBottom = VECTOR3(0, -100, 0) * mWp;
 }

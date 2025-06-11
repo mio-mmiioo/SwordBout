@@ -8,6 +8,8 @@ public:
 	Bee(const VECTOR& pos, float rot);
 	~Bee();
 	void Update() override;
+
+	void Attack(VECTOR3 prevBtm, VECTOR3 prevTop, VECTOR3 nowBtm, VECTOR3 nowTop);
 private:
 	enum AnimID {
 		A_NEUTRAL = 0,

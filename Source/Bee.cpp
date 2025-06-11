@@ -41,4 +41,21 @@ Bee::~Bee()
 
 void Bee::Update()
 {
+	animator->Update();
+
+	if (animator->GetCurrentID() == A_DAMAGE)
+	{
+		if (animator->IsFinish())
+		{
+			animator->Play(A_NEUTRAL);
+		}
+	}
+}
+
+void Bee::Attack(VECTOR3 prevBtm, VECTOR3 prevTop, VECTOR3 nowBtm, VECTOR3 nowTop)
+{
+	if (true/*‚±‚±‚Å“–‚½‚è”»’è*/)
+	{
+		animator->Play(A_DAMAGE);
+	}
 }

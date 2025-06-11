@@ -41,6 +41,7 @@ private:
 
 	VECTOR3 prevSabelTop;//Œ•æ
 	VECTOR3 prevSabelBottom;//Œ•Œ³
+	void AttackMain(); // UŒ‚
 
 	float time;//‹ó’†‚É‚¢‚éŠÔ
 
