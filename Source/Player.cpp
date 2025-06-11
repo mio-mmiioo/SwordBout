@@ -6,6 +6,7 @@
 namespace
 {
 	const float PLAYER_SPEED = 3.0f;
+	VECTOR3 G = { 0, 9.8f, 0 };
 }
 
 Player::Player() : Player(VGet(0,0,0), 0.0f){}
@@ -47,6 +48,11 @@ Player::Player(const VECTOR3& pos, float rot)
 
 	hSabel = MV1LoadModel("data/model/Character/Weapon/Sabel/Sabel.mv1");
 	assert(hSabel > 0);
+
+	state = S_FREE;
+	//prevAttackKey = false;
+
+	time = 0;
 }
 
 Player::~Player()
@@ -66,6 +72,34 @@ void Player::Update()
 {
 	animator->Update();
 
+	switch (state) {
+	case S_FREE: UpdateFree(); break;
+	case S_ATTACK1: UpdateAttack1(); break;
+	case S_ATTACK2: UpdateAttack2(); break;
+	case S_ATTACK3: UpdateAttack3(); break;
+	case S_GUARD: UpdateGuard(); break;
+	case S_JUMP: UpdateJump(); break;
+	}
+
+	camera->SetPlayerPosition(transform.position);
+}
+
+bool Player::HitAttackKey()
+{
+	bool current = (GetMouseInput() & MOUSE_INPUT_LEFT);
+
+	if (current && !prevAttackKey)
+	{
+		prevAttackKey = current;
+		return true;
+	}
+
+	prevAttackKey = current;
+	return false;
+}
+
+void Player::UpdateFree()
+{
 	VECTOR3 move;
 
 	//ƒL[“ü—Í‚É‚æ‚éˆÚ“®
@@ -110,9 +144,72 @@ void Player::Update()
 	if (stage->CollideLine(p + VECTOR3(0, 100, 0), p + VECTOR3(0, -100, 0), &hit))
 	{
 		p = hit;
+		if (time != 0)
+		time = 0;
+	}
+	else
+	{
+		//‹ó’†‚È‚ç—Ž‰ºˆ—
+		time += Time::DeltaTime();
+		p -= G * time * time;
 	}
 
-	camera->SetPlayerPosition(transform.position);
+	if (HitAttackKey())
+	{
+		animator->Play(A_ATTACK1);
+		state = State::S_ATTACK1;
+	}
+}
+
+void Player::UpdateAttack1()
+{
+	if (animator->IsFinish())
+	{
+		animator->Play(A_NEUTRAL);
+		state = S_FREE;
+	}
+	if (animator->GetCurrentFrame() >= 8.5f)
+	{
+		if (HitAttackKey())
+		{
+			animator->Play(A_ATTACK2);
+			state = State::S_ATTACK2;
+		}
+	}
+}
+
+void Player::UpdateAttack2()
+{
+	if (animator->IsFinish())
+	{
+		animator->Play(A_NEUTRAL);
+		state = S_FREE;
+	}
+	if (animator->GetCurrentFrame() >= 9.5f)
+	{
+		if (HitAttackKey())
+		{
+			animator->Play(A_ATTACK3);
+			state = State::S_ATTACK3;
+		}
+	}
+}
+
+void Player::UpdateAttack3()
+{
+	if (animator->IsFinish())
+	{
+		animator->Play(A_NEUTRAL);
+		state = S_FREE;
+	}
+}
+
+void Player::UpdateGuard()
+{
+}
+
+void Player::UpdateJump()
+{
 }
 
 void Player::Draw()
@@ -124,5 +221,9 @@ void Player::Draw()
 	MV1SetMatrix(hSabel, mWp);
 	MV1DrawModel(hSabel);
 
-	DrawLine3D(VECTOR3(0, 0, 0) * mWp, VECTOR3(0, -200, 0) * mWp, GetColor(255, 0, 0));
+	DrawLine3D(VECTOR3(0, 0, 0) * mWp, VECTOR3(0, -100, 0) * mWp, GetColor(255, 0, 0));
+	DrawLine3D(prevSabelTop, prevSabelBottom, GetColor(0, 0, 255));
+
+	prevSabelTop = VECTOR3(0, 0, 0) * mWp;
+	prevSabelBottom = VECTOR3(0, -100, 0) * mWp;
 }

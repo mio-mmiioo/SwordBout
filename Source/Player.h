@@ -35,4 +35,30 @@ private:
 	Camera* camera;
 
 	int hSabel;
+
+	bool prevAttackKey;
+	bool HitAttackKey();
+
+	VECTOR3 prevSabelTop;//Œ•æ
+	VECTOR3 prevSabelBottom;//Œ•Œ³
+
+	float time;//‹ó’†‚É‚¢‚éŠÔ
+
+	//ó‘Ô‘JˆÚ
+	enum State {
+		S_FREE = 0,
+		S_ATTACK1,
+		S_ATTACK2,
+		S_ATTACK3,
+		S_GUARD,
+		S_JUMP
+	};
+
+	State state;
+	void UpdateFree();
+	void UpdateAttack1();
+	void UpdateAttack2();
+	void UpdateAttack3();
+	void UpdateGuard();
+	void UpdateJump();
 };
