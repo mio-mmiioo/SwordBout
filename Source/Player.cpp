@@ -232,12 +232,6 @@ void Player::UpdateAttack3()
 
 void Player::UpdateGuard()
 {
-	if (animator->IsFinish())
-	{
-		animator->Play(A_NEUTRAL);
-		state = S_FREE;
-	}
-
 	if (CheckHitKey(KEY_INPUT_G))
 	{
 		animator->Play(A_GUARD_LOOP);
@@ -245,6 +239,11 @@ void Player::UpdateGuard()
 	else
 	{
 		animator->Play(A_GUARD_OUT);
+		if (animator->IsFinish())
+		{
+			animator->Play(A_NEUTRAL);
+			state = S_FREE;
+		}
 	}
 }
 
