@@ -1,13 +1,14 @@
 #pragma once
-#include "Object3D.h"
+#include "Actor.h"
 #include "Animator.h"
 
-class Goblin : public Object3D {
+class Goblin : public Actor {
 public:
 	Goblin();
 	Goblin(const VECTOR& pos, float rot);
 	~Goblin();
 	void Update() override;
+	void Attack(VECTOR3 prevBtm, VECTOR3 prevTop, VECTOR3 nowBtm, VECTOR3 nowTop) override;
 private:
 	enum AnimID {
 		A_NEUTRAL = 0,

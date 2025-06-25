@@ -1,16 +1,15 @@
 #pragma once
-#include "Object3D.h"
+#include "Actor.h"
 #include "Animator.h"
 
-class Bee : public Object3D {
+class Bee : public Actor {
 public:
 	Bee();
 	Bee(const VECTOR& pos, float rot);
 	~Bee();
 	void Update() override;
 
-	void Attack(VECTOR3 prevBtm, VECTOR3 prevTop, VECTOR3 nowBtm, VECTOR3 nowTop);
-	bool IsHit(VECTOR3 segmentPos1, VECTOR3 segmentPos2, float distance, VECTOR3 prevBtm, VECTOR3 prevTop, VECTOR3 nowBtm, VECTOR3 nowTop);
+	void Attack(VECTOR3 prevBtm, VECTOR3 prevTop, VECTOR3 nowBtm, VECTOR3 nowTop) override;
 
 private:
 	enum AnimID {

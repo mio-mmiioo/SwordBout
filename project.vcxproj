@@ -152,6 +152,7 @@
     <ClInclude Include="Library\SceneBase.h" />
     <ClInclude Include="Library\SceneManager.h" />
     <ClInclude Include="Library\Time.h" />
+    <ClInclude Include="Source\Actor.h" />
     <ClInclude Include="Source\Animator.h" />
     <ClInclude Include="Source\Bee.h" />
     <ClInclude Include="Source\BootScene.h" />
@@ -187,6 +188,7 @@
     <ClCompile Include="Library\ObjectManager.cpp" />
     <ClCompile Include="Library\SceneManager.cpp" />
     <ClCompile Include="Library\Time.cpp" />
+    <ClCompile Include="Source\Actor.cpp" />
     <ClCompile Include="Source\Animator.cpp" />
     <ClCompile Include="Source\Bee.cpp" />
     <ClCompile Include="Source\BootScene.cpp" />

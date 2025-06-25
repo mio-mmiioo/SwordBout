@@ -27,6 +27,8 @@ Goblin::Goblin(const VECTOR& pos, float rot)
 
 	transform.position = pos;
 	transform.rotation.y = rot;
+
+	coll = CapsuleCollider(VECTOR3(0, 150, 0), VECTOR3(0, 0, 0), 50);
 }
 
 Goblin::~Goblin()
@@ -44,4 +46,13 @@ Goblin::~Goblin()
 
 void Goblin::Update()
 {
+}
+
+void Goblin::Attack(VECTOR3 prevBtm, VECTOR3 prevTop, VECTOR3 nowBtm, VECTOR3 nowTop)
+{
+	if (IsHit(prevBtm, prevTop, nowBtm, nowTop))
+	{
+		animator->Play(A_DAMAGE);
+		damaged = true;
+	}
 }

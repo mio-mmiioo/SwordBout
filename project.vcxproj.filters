@@ -92,6 +92,9 @@
     <ClCompile Include="Source\csvReader.cpp">
       <Filter>9.Common</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Actor.cpp">
+      <Filter>2.PlayScene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Screen.h" />
@@ -200,6 +203,9 @@
     </ClInclude>
     <ClInclude Include="Source\CsvReader.h">
       <Filter>9.Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Actor.h">
+      <Filter>2.PlayScene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

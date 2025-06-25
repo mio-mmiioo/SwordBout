@@ -107,10 +107,16 @@ void Player::AttackMain()
 	VECTOR3 nowSabelTop = VECTOR3(0, -200, 0) * mWp;
 
 	//‚±‚±‚Å“–‚½‚è”»’è
-	std::list<Bee*> bees = FindGameObjects<Bee>();
-	for (Bee* b : bees)
+	//std::list<Bee*> bees = FindGameObjects<Bee>();
+	//for (Bee* b : bees)
+	//{
+	//	b->Attack(prevSabelBottom, prevSabelTop, nowSabelBottom, nowSabelTop);
+	//}
+
+	std::list<Actor*> enemies = FindGameObjects<Actor>();
+	for (Actor* e : enemies)
 	{
-		b->Attack(prevSabelBottom, prevSabelTop, nowSabelBottom, nowSabelTop);
+		e->Attack(prevSabelBottom, prevSabelTop, nowSabelBottom, nowSabelTop);
 	}
 	prevSabelTop = nowSabelTop;
 	prevSabelBottom = nowSabelBottom;
