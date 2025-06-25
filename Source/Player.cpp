@@ -6,7 +6,7 @@
 
 namespace
 {
-	const float PLAYER_SPEED = 5.0f;
+	const float PLAYER_SPEED = 10.0f;
 	VECTOR3 G = { 0, 9.8f, 0 };
 }
 

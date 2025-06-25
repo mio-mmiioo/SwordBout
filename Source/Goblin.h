@@ -1,9 +1,22 @@
 #pragma once
 #include "Actor.h"
 #include "Animator.h"
+#include "StateBase.h"
+
+class GoblinWalk : public StateBase
+{
+public:
+	GoblinWalk(Actor* parent) : StateBase(parent) {}
+	~GoblinWalk() {}
+	void Update() override;
+	void Suspend() override;
+	void Resume() override;
+};
 
 class Goblin : public Actor {
 public:
+	friend class GoblinWalk;//friend class 自分のクラスにアクセスしていいよって許可
+
 	Goblin();
 	Goblin(const VECTOR& pos, float rot);
 	~Goblin();
@@ -22,4 +35,22 @@ private:
 		A_DOWN,
 	};
 	Animator* animator;
+
+	enum State {
+		S_WALK = 0,
+		S_RUN,
+		S_ATTACK,
+		S_WAIT,
+		S_BACK,
+		S_DAMAGE,
+		S_BLOW,
+		S_MAX
+	};
+	State state;
+	void UpdateWalk();
+	void UpdateRun();
+
+#if false //クラスバージョン
+	StateBase* stateAction[State::S_MAX];
+#endif
 };
