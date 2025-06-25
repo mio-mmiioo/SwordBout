@@ -10,6 +10,8 @@ public:
 	void Update() override;
 
 	void Attack(VECTOR3 prevBtm, VECTOR3 prevTop, VECTOR3 nowBtm, VECTOR3 nowTop);
+	bool IsHit(VECTOR3 segmentPos1, VECTOR3 segmentPos2, float distance, VECTOR3 prevBtm, VECTOR3 prevTop, VECTOR3 nowBtm, VECTOR3 nowTop);
+
 private:
 	enum AnimID {
 		A_NEUTRAL = 0,

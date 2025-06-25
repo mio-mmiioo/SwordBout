@@ -52,10 +52,33 @@ void Bee::Update()
 	}
 }
 
+//float Segment_Triangle_MinLength(
+//	VECTOR SegmentPos1, 
+//	VECTOR SegmentPos2, 
+//	VECTOR TrianglePos1, 
+//	VECTOR TrianglePos2, 
+//	VECTOR TrianglePos3);
+//@‚±‚Ì‹——£‚ª50ˆÈ“à‚É‚È‚Á‚½‚ç“–‚½‚Á‚Ä‚¢‚é
+
 void Bee::Attack(VECTOR3 prevBtm, VECTOR3 prevTop, VECTOR3 nowBtm, VECTOR3 nowTop)
 {
-	if (true/*‚±‚±‚Å“–‚½‚è”»’è*/)
+	VECTOR3 SegmentPos1 = transform.position + VECTOR3(0, 190, 0);
+	VECTOR3 SegmentPos2 = transform.position + VECTOR3(0, 90, 0);
+	if (IsHit(SegmentPos1, SegmentPos2, 50.0f, prevBtm, prevTop, nowBtm, nowTop))
 	{
 		animator->Play(A_DAMAGE);
 	}
+}
+
+bool Bee::IsHit(VECTOR3 segmentPos1, VECTOR3 segmentPos2, float distance, VECTOR3 prevBtm, VECTOR3 prevTop, VECTOR3 nowBtm, VECTOR3 nowTop)
+{
+	float check1 = Segment_Triangle_MinLength(segmentPos1, segmentPos2, prevBtm, prevTop, nowBtm);
+	float check2 = Segment_Triangle_MinLength(segmentPos1, segmentPos2, prevTop, nowBtm, nowTop);
+
+	if (check1 <= distance || check2 <= distance)
+	{
+		return true;
+	}
+
+	return false;
 }

@@ -6,7 +6,7 @@
 
 namespace
 {
-	const float PLAYER_SPEED = 3.0f;
+	const float PLAYER_SPEED = 5.0f;
 	VECTOR3 G = { 0, 9.8f, 0 };
 }
 
@@ -146,6 +146,12 @@ void Player::UpdateFree()
 		transform.position += move * PLAYER_SPEED * MGetRotY(transform.rotation.y);
 	}
 
+	if (CheckHitKey(KEY_INPUT_G))
+	{
+		animator->Play(AnimID::A_GUARD_IN);
+		state = State::S_GUARD;
+	}
+
 	if (move.x + move.y + move.z == 0)
 	{
 		animator->Play(AnimID::A_NEUTRAL);
@@ -175,6 +181,7 @@ void Player::UpdateFree()
 	if (HitAttackKey())
 	{
 		animator->Play(A_ATTACK1);
+		//animator->SetPlaySpeed(0.1f);//‚±‚ê‚ð‘‚­‚Æ“–‚½‚Á‚Ä‚¢‚é‚©‚Ì”»’è‚ð‚µ‚â‚·‚¢
 		state = State::S_ATTACK1;
 	}
 }
@@ -225,6 +232,20 @@ void Player::UpdateAttack3()
 
 void Player::UpdateGuard()
 {
+	if (animator->IsFinish())
+	{
+		animator->Play(A_NEUTRAL);
+		state = S_FREE;
+	}
+
+	if (CheckHitKey(KEY_INPUT_G))
+	{
+		animator->Play(A_GUARD_LOOP);
+	}
+	else
+	{
+		animator->Play(A_GUARD_OUT);
+	}
 }
 
 void Player::UpdateJump()
