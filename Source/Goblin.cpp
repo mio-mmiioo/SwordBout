@@ -29,6 +29,7 @@ Goblin::Goblin(const VECTOR& pos, float rot)
 
 	transform.position = pos;
 	transform.rotation.y = rot;
+	basePosition = pos;
 
 	coll = CapsuleCollider(VECTOR3(0, 150, 0), VECTOR3(0, 0, 0), 50);
 
@@ -65,8 +66,11 @@ void Goblin::Update()
 	case State::S_RUN:
 		UpdateRun();
 		break;
-	default:
+	case State::S_BACK:
+		UpdateBack();
 		break;
+	default:
+		assert(false);
 	}
 
 }
@@ -114,14 +118,48 @@ void Goblin::UpdateRun()
 	animator->Play(A_RUN);
 	Player* player = FindGameObject<Player>();
 	VECTOR3 playerPos = player->GetTransform().position;
-	VECTOR3 toPlayer = playerPos - transform.position;
 
-	VECTOR3 v = VECTOR3(0, 0, 1) * MGetRotY(toPlayer.y);
+	MoveSet(playerPos, 2.0f * DegToRad, 3.5f);
 
-	transform.position += toPlayer.Normalize() * 3.5;
+	VECTOR3 disBase = playerPos - basePosition;
+	if (disBase.Size() > 2000)
+	{
+		state = S_BACK;
+	}
+}
 
-	if (toPlayer.Size() > 1000)
+void Goblin::UpdateBack()
+{
+	animator->Play(A_WALK);
+	
+	MoveSet(basePosition, 1.0f * DegToRad, 2.0f);
+
+	VECTOR3 disBase = basePosition - transform.position;
+	if (disBase.Size() < 10)
 	{
 		state = S_WALK;
 	}
+}
+
+void Goblin::MoveSet(VECTOR3 toPosition, float angSpeed, float moveSpeed)
+{
+	VECTOR3 toGo = toPosition - transform.position;
+
+	VECTOR3 front = VECTOR3(0, 0, 1) * MGetRotY(transform.rotation.y);//³–Ê
+	VECTOR3 right = VECTOR3(1, 0, 0) * MGetRotY(transform.rotation.y);//‰E ‰ñ“]‚ðŒ©‚é‚Ì‚ÉŽg‚Á‚Ä‚é
+
+	if (VDot(front, toGo.Normalize()) >= cos(angSpeed))
+	{
+		transform.rotation.y = atan2f(toGo.x, toGo.z);
+	}
+	else if (VDot(right, toGo) > 0)
+	{
+		transform.rotation.y += angSpeed;
+	}
+	else
+	{
+		transform.rotation.y -= angSpeed;
+	}
+
+	transform.position += VECTOR3(0, 0, moveSpeed) * MGetRotY(transform.rotation.y);
 }

@@ -49,6 +49,11 @@ private:
 	State state;
 	void UpdateWalk();
 	void UpdateRun();
+	void UpdateBack();
+
+	VECTOR3 basePosition;//自分が生成された場所
+
+	void MoveSet(VECTOR3 toPosition, float angSpeed, float moveSpeed);//どこかへ向かうときの関数 向かう場所の座標を入れる
 
 #if false //クラスバージョン
 	StateBase* stateAction[State::S_MAX];
